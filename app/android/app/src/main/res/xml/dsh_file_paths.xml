@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FileProvider roots for files/FilesPlugin.kt ("打开" on a chat artifact).
+     A URI is only ever granted for the one file the user opens. -->
+<paths>
+    <!-- Downloaded copies of remote hosts' files, and copies made to open anything else. -->
+    <cache-path name="artifacts" path="artifacts/" />
+    <!-- 应用内更新: a downloaded package opened in the system installer (update/UpdatePlugin.kt). -->
+    <cache-path name="updates" path="updates/" />
+</paths>

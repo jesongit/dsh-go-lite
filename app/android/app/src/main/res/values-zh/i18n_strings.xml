@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 原生界面文字（通知、悬浮窗、前台服务、Toast），经 i18n/AppStrings.kt 跟随 App 语言。 -->
+<resources>
+    <!-- notify -->
+    <string name="notify_decline">拒绝</string>
+    <string name="notify_allow_once">允许本次</string>
+    <string name="notify_group_chats">对话</string>
+    <string name="notify_channel_done">一轮结束</string>
+    <string name="notify_channel_done_description">App 在后台时，一轮对话完成、出错或被停下</string>
+    <string name="notify_channel_attention">等你确认</string>
+    <string name="notify_channel_attention_description">AI 等你确认一步操作，或等你回答问题</string>
+    <string name="notify_action_failed">没能处理</string>
+    <string name="notify_action_processing">正在处理</string>
+    <string name="notify_action_allowed">已允许</string>
+    <string name="notify_action_declined">已拒绝</string>
+    <string name="notify_action_expired">已失效</string>
+    <plurals name="notify_reminders">
+        <item quantity="other">有 %1$d 条提醒</item>
+    </plurals>
+    <plurals name="notify_reminder_count">
+        <item quantity="other">%1$d 条提醒</item>
+    </plurals>
+    <string name="notify_new_reminder">有新提醒</string>
+    <string name="live_channel">实时活动</string>
+    <string name="live_channel_description">DSH 在干活或等你处理时，显示在状态栏和锁屏上</string>
+    <!-- pet -->
+    <string name="pet_open_chat">打开对话</string>
+    <string name="pet_more">更多</string>
+    <string name="pet_snooze">今天不再显示</string>
+    <string name="pet_settings">宠物设置</string>
+    <string name="pet_channel">悬浮宠物</string>
+    <string name="pet_running">悬浮宠物已开启</string>
+    <string name="pet_window_title">DSH 宠物</string>
+    <string name="pet_label">宠物</string>
+    <string name="pet_open_channel">从宠物打开</string>
+    <string name="pet_tap_open">点这里打开</string>
+    <string name="pet_probe_title">修复登录</string>
+    <string name="pet_probe_done">做完了</string>
+    <string name="pet_probe_public">有一轮完成了</string>
+    <string name="pet_ask">问一句</string>
+    <string name="pet_new_chat">新对话</string>
+    <string name="pet_stop">停止当前任务</string>
+    <string name="pet_switch_host">切换主机</string>
+    <string name="pet_ask_hint">问点什么</string>
+    <string name="pet_ask_send">发送</string>
+    <string name="pet_ask_sending">正在发送</string>
+    <string name="pet_ask_failed">没发出去</string>
+    <string name="pet_go_answer">去回答</string>
+    <string name="pet_go_review">去看看</string>
+    <string name="pet_answer_failed">没成功，去 App 里处理</string>
+    <!-- share -->
+    <string name="share_file">文件</string>
+    <string name="share_image">图片</string>
+    <string name="share_video">视频</string>
+    <string name="share_audio">音频</string>
+    <string name="share_text">文本</string>
+    <!-- tile -->
+    <string name="tile_new_chat_label">新对话</string>
+</resources>

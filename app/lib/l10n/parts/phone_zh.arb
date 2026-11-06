@@ -1,0 +1,89 @@
+{
+  "phoneDiagnosticsCollecting": "正在收集…",
+  "phoneDiagnosticsPacking": "正在打包…",
+  "phoneDiagnosticsSharing": "正在打开分享…",
+  "phoneDiagnosticsSaving": "正在存到「下载」…",
+  "phoneDiagnosticsShare": "分享诊断包",
+  "phoneDiagnosticsShareHint": "附在问题反馈里",
+  "phoneDiagnosticsSave": "存到「下载」",
+  "phoneDiagnosticsSaveHint": "存进 下载/DSH-Go",
+  "phoneDiagnosticsNote": "含客户端版本、设备、日志和最近一次崩溃，外发前请检查隐私信息",
+  "phoneDiagnosticsExport": "导出诊断包",
+  "phoneEngineKeepAlive": "后台运行",
+  "phoneEngineDiagnostics": "诊断",
+  "phoneLogEmpty": "还没有日志",
+  "phoneLogShareTitle": "DSH Go 客户端日志",
+  "phoneLogCopyAll": "复制全部",
+  "phoneBackgroundAllow": "去放行",
+  "phoneOpenAppInfoFailed": "打不开应用信息，请到「设置 → 应用」里找到 DSH Go",
+  "phoneControlNotifications": "通知",
+  "phoneRomStock": "原生 / 其他",
+  "phoneRestrictedOverlay": "悬浮窗",
+  "phoneRestrictedOpenOverlay": "去开悬浮窗",
+  "phoneRestrictedOpenInfoStep": "回到这里，点「打开应用信息」。",
+  "phoneRestrictedMenuStep": "点右上角的三个点，选「允许受限制的设置」，按提示验证锁屏密码。",
+  "phoneRestrictedTryOverlay": "先去「悬浮窗」设置里点一次 DSH Go 的开关，看到「受限制的设置」提示后点「确定」。做过这一步，下面的选项才会出现。",
+  "phoneRestrictedBackOverlay": "回到「悬浮窗」设置，打开 DSH Go。",
+  "phoneRestrictedHuaweiOverlay": "华为 HarmonyOS 4 及更早的系统大多没有这一步，直接去「悬浮窗」设置打开 DSH Go。",
+  "phoneRestrictedVivoNote": "不同 OriginOS 版本位置可能不同。右上角没有三个点时，把应用信息页往下翻到底找一找。",
+  "phoneRestrictedAdvancedStep": "在「高级设置」里找到「允许受限制的设置」，打开它。",
+  "phoneRestrictedOppoNote": "ColorOS 有时隐藏此选项，可在应用信息中检查「允许受限制的设置」，再返回悬浮窗设置重试；不要为此卸载或清除数据。",
+  "phoneRestrictedHuaweiNote": "如果悬浮窗设置提示「受限制的设置」，按「原生 / 其他」的步骤做。",
+  "phoneRestrictedTitle": "允许受限制的设置",
+  "phoneRestrictedSteps": "步骤",
+  "phoneRestrictedDiagram": "图示",
+  "phoneRestrictedOpenInfo": "打开应用信息",
+  "phoneRestrictedOpenOverlayFailed": "打不开悬浮窗设置，请到「设置」里搜索「悬浮窗」",
+  "phoneRestrictedFootnote": "名称因系统而异，找不到就在设置里搜「受限制」；仍打不开时重启手机再试",
+  "phoneRestrictedAppInfo": "应用信息",
+  "phoneRestrictedPermissionsManager": "权限管理",
+  "phoneRestrictedBatterySaver": "省电策略",
+  "phoneRestrictedAdvanced": "高级设置",
+  "phoneRestrictedPermissions": "权限",
+  "phoneRestrictedBattery": "电池",
+  "phoneRestrictedDiagramAdvanced": "图示：应用信息页里点「高级设置」，再打开「允许受限制的设置」",
+  "phoneRestrictedDiagramMenu": "图示：应用信息页点右上角三个点，再选「允许受限制的设置」",
+  "phoneRestrictedCaptionAdvanced": "① 点「高级设置」",
+  "phoneRestrictedCaptionMenu": "① 点右上角三个点",
+  "phoneRestrictedCaptionToggle": "② 打开这个开关",
+  "phoneRestrictedCaptionOption": "② 选这一项",
+  "phoneAccentMist": "雾蓝",
+  "phoneAccentDaiqing": "黛青",
+  "phoneAccentDusk": "暮紫",
+  "phoneAccentTurquoise": "松石",
+  "phoneAccentAmber": "琥珀",
+  "phoneAccentGraphite": "石墨",
+  "phoneAccentCustom": "自定义",
+  "phoneLogLineCount": "{count} 行",
+  "@phoneLogLineCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "phoneLogCopiedLines": "已复制 {count} 行",
+  "@phoneLogCopiedLines": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "phoneRestrictedSubtitle": "侧载的 App 要先放行这一项，{place}开关才点得动",
+  "@phoneRestrictedSubtitle": {
+    "placeholders": {
+      "place": {
+        "type": "String"
+      }
+    }
+  },
+  "phoneRestrictedDone": "{place}已开好，可以返回了",
+  "@phoneRestrictedDone": {
+    "placeholders": {
+      "place": {
+        "type": "String"
+      }
+    }
+  }
+}

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Native UI text (notifications, overlays, foreground service, toasts), read through
+     i18n/AppStrings.kt so it follows the app language. English here, Chinese in values-zh/. -->
+<resources>
+    <!-- notify -->
+    <string name="notify_decline">Decline</string>
+    <string name="notify_allow_once">Allow once</string>
+    <string name="notify_group_chats">Chats</string>
+    <string name="notify_channel_done">Turn finished</string>
+    <string name="notify_channel_done_description">A chat turn finishes, fails or stops while the app is in the background</string>
+    <string name="notify_channel_attention">Needs approval</string>
+    <string name="notify_channel_attention_description">The agent needs approval or an answer</string>
+    <string name="notify_action_failed">Couldn’t complete</string>
+    <string name="notify_action_processing">Processing</string>
+    <string name="notify_action_allowed">Allowed</string>
+    <string name="notify_action_declined">Declined</string>
+    <string name="notify_action_expired">Expired</string>
+    <plurals name="notify_reminders">
+        <item quantity="one">You have %1$d reminder</item>
+        <item quantity="other">You have %1$d reminders</item>
+    </plurals>
+    <plurals name="notify_reminder_count">
+        <item quantity="one">%1$d reminder</item>
+        <item quantity="other">%1$d reminders</item>
+    </plurals>
+    <string name="notify_new_reminder">New reminder</string>
+    <string name="live_channel">Live activity</string>
+    <string name="live_channel_description">What DSH is doing or waiting on, in the status bar and on the lock screen</string>
+    <!-- pet -->
+    <string name="pet_open_chat">Open chat</string>
+    <string name="pet_more">More</string>
+    <string name="pet_snooze">Hide for today</string>
+    <string name="pet_settings">Pet settings</string>
+    <string name="pet_channel">Floating pet</string>
+    <string name="pet_running">Floating pet is on</string>
+    <string name="pet_window_title">DSH pet</string>
+    <string name="pet_label">Pet</string>
+    <string name="pet_open_channel">Open from pet</string>
+    <string name="pet_tap_open">Tap to open</string>
+    <string name="pet_probe_title">Fix sign-in</string>
+    <string name="pet_probe_done">Done</string>
+    <string name="pet_probe_public">A turn finished</string>
+    <string name="pet_ask">Ask</string>
+    <string name="pet_new_chat">New chat</string>
+    <string name="pet_stop">Stop current task</string>
+    <string name="pet_switch_host">Switch host</string>
+    <string name="pet_ask_hint">Ask something</string>
+    <string name="pet_ask_send">Send</string>
+    <string name="pet_ask_sending">Sending</string>
+    <string name="pet_ask_failed">Not sent</string>
+    <string name="pet_go_answer">Answer</string>
+    <string name="pet_go_review">Review</string>
+    <string name="pet_answer_failed">Didn’t go through. Open the app</string>
+    <!-- share -->
+    <string name="share_file">File</string>
+    <string name="share_image">Image</string>
+    <string name="share_video">Video</string>
+    <string name="share_audio">Audio</string>
+    <string name="share_text">Text</string>
+    <!-- tile -->
+    <string name="tile_new_chat_label">New chat</string>
+</resources>

@@ -1,0 +1,103 @@
+{
+  "@@locale": "en",
+  "accessPickTitle": "What should DSH Go help with?",
+  "accessPickMessage": "Pick any, then turn each one on",
+  "accessPickConfirm": "Turn on selected",
+  "accessSkip": "Skip",
+  "accessFeatureFiles": "Attachments and saved files",
+  "accessFeatureFilesNeeds": "Choose files or allow saving when needed",
+  "accessFeaturePet": "Pet over other apps",
+  "accessFeaturePetNeeds": "Needs display over other apps",
+  "accessFeatureBackground": "Keep running in background",
+  "accessFeatureBackgroundNeeds": "Tells you when tasks finish; needs notifications and background access",
+  "accessFeatureVoice": "Voice input",
+  "accessFeatureVoiceNeeds": "Needs the microphone",
+  "accessVoiceModel": "Works offline; downloads a voice model of about {size} MB",
+  "@accessVoiceModel": {
+    "placeholders": {
+      "size": {
+        "type": "int"
+      }
+    }
+  },
+  "accessVoiceMetered": "You're on mobile data; the download will use it",
+  "accessStepCount": "{index} / {total}",
+  "@accessStepCount": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "accessTurnOn": "Turn on",
+  "accessOpenSettings": "Open settings",
+  "accessItsSet": "It's set",
+  "accessOpenAgain": "Open again",
+  "accessIsOn": "On",
+  "accessNotOnYet": "Not on yet",
+  "accessDidYouSet": "Did you turn it on there?",
+  "accessWhere": "Where: {path}",
+  "@accessWhere": {
+    "placeholders": {
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "accessOpenFailed": "Couldn't open system settings",
+  "accessMicTitle": "Allow the microphone",
+  "accessMicWhy": "For voice input",
+  "accessStorageTitle": "Allow file access",
+  "accessStorageWhy": "For attachments and saving downloaded or generated files; does not expose phone folders to the host",
+  "accessNotifyTitle": "Allow notifications",
+  "accessNotifyWhy": "Tells you when a task finishes or needs you",
+  "accessBatteryTitle": "Allow background running",
+  "accessBatteryWhy": "Keeps the remote connection and alerts active when you switch apps",
+  "accessVendorBackgroundWhy": "Helps prevent the system disconnecting or stopping the app in the background",
+  "accessAutostartTitle": "Allow auto-start",
+  "accessAutostartWhy": "Lets Android restore the app under its background policy; remote tasks run on the host",
+  "accessVivoAutostartPath": "Permission management › Auto-start › {app}",
+  "@accessVivoAutostartPath": {
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
+  "accessXiaomiAutostartPath": "Manage apps › {app} › Autostart",
+  "@accessXiaomiAutostartPath": {
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
+  "accessOverlayTitle": "Allow display over other apps",
+  "accessOverlayWhy": "Lets your pet appear over other apps",
+  "accessOverlayGreyed": "Switch greyed out?",
+  "accessRestrictedTitle": "Allow restricted settings first",
+  "accessRestrictedMenu": "In App info, tap the three dots at the top right and choose “Allow restricted settings”",
+  "accessRestrictedAdvanced": "In App info, open “Advanced settings” and turn on “Allow restricted settings”",
+  "accessRestrictedHelp": "See how",
+  "accessOpenAppInfo": "Open app info",
+  "accessStateOn": "On",
+  "accessStateOff": "Off",
+  "accessStateVisited": "Visited",
+  "accessStateUnknown": "Set up",
+  "accessSummaryAllSet": "All set",
+  "accessSummaryLeft": "{count, plural, =1{1 still off} other{{count} still off}}",
+  "@accessSummaryLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "accessSummaryMessage": "Turn on the rest anytime in Settings › General › System permissions",
+  "accessFinishFailed": "Couldn’t finish setup",
+  "accessPageTitle": "System permissions",
+  "accessPageSubtitle": "What each feature needs from Android"
+}

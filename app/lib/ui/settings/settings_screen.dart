@@ -1,0 +1,337 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../l10n/l10n.dart';
+import '../../platform/platform_state.dart';
+import '../../state/ask_ai.dart' show askAiAvailableProvider;
+import '../../state/connection_state.dart';
+import '../../state/engine_settings_state.dart';
+import '../../state/features_state.dart';
+import '../../state/hosts_state.dart';
+import '../../state/plugins_state.dart';
+import '../../state/sessions_state.dart';
+import '../../state/settings_state.dart';
+import '../../state/ui_mode_state.dart';
+import '../../state/update_state.dart';
+import '../common/ask_ai.dart';
+import '../common/overview_card.dart';
+import '../common/search_capsule.dart';
+import '../common/status_chip.dart';
+import '../engine_settings/engine_settings_hub.dart';
+import '../engine_settings/web_search_page.dart';
+import 'media_settings_page.dart';
+import '../features/feature_catalog.dart' show communityPage;
+import '../features/feature_format.dart' show permissionName;
+import '../features/permission_page.dart';
+import '../pets/pet_settings_page.dart';
+import '../plugins/plugins_screen.dart';
+import '../plugins/seats/plugin_settings_tiles.dart';
+import '../plugins/seats/seat_probe.dart';
+import '../providers/providers_page.dart';
+import '../remote/host_status.dart';
+import '../remote/remote_screen.dart';
+import '../shell/brand_mark.dart';
+import '../shell/page_frame.dart';
+import '../theme/app_icons.dart';
+import '../theme/theme.dart';
+import '../update/update_tiles.dart' show UpdateBadge;
+import 'about_page.dart';
+import 'appearance/appearance_page.dart';
+import 'background_guide_page.dart';
+import 'interface_page.dart';
+import 'language_tile.dart';
+import 'notification_settings.dart';
+import 'performance_page.dart';
+import 'privacy_page.dart';
+import 'personalization_page.dart';
+import 'diagnostics_page.dart';
+import 'search/settings_search_page.dart';
+import 'settings_widgets.dart';
+import 'system_access_page.dart';
+import 'voice_settings_page.dart';
+
+/// One hue per group on the hub: rows of a group share it.
+abstract final class SettingsHues {
+  static const ai = 0;
+  static const abilities = 4;
+  static const appearance = 1;
+  static const general = 5;
+  static const hosts = 6;
+  static const help = 7;
+}
+
+/// Settings hub: search, the overview card (account, balance, engine), then
+/// six groups by what people come to do — AI, 能力, 外观, 通用, 主机, 帮助与
+/// 关于 (docs/design/settings-ia.md §4.2). Every row that opens a page says
+/// where it stands; nothing here loosens a safeguard or deletes anything:
+/// those live on their own pages.
+class SettingsScreen extends ConsumerWidget {
+  const SettingsScreen({super.key});
+
+  void _push(BuildContext context, Widget page) =>
+      Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => page));
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = context.l10n;
+    final settings = ref.watch(settingsProvider);
+    final colors = DshColors.of(context);
+    final notifier = ref.read(settingsProvider.notifier);
+    final uiMode = ref.watch(uiModeProvider.select((s) => s.mode));
+    final host = ref.watch(activeHostProvider);
+    Widget? text(String? value, {Color? color}) =>
+        value == null ? null : Text(value, style: color == null ? null : TextStyle(color: color));
+
+    // AI.
+    final permission = _permissionValue(ref);
+    final plugins = ref.watch(installedPluginsProvider.select((s) => s.value?.length));
+    // Read only once the host's settings are at hand: the hub asks for nothing.
+    final search = ref.exists(engineSettingsProvider) ? ref.watch(engineSettingsProvider).value : null;
+    final newApi = search == null
+        ? null
+        : search.valueOf(const FieldRef(WebSearchSettingsPage.webNs, ['searchProvider'])) == 'deepseek-search-api';
+    // 通用.
+    final exempt = ref.watch(batteryExemptProvider).value;
+    // 主机.
+    final ssh = ref.watch(hostsProvider.select((s) => s.ssh.length));
+    final hostName = ref.watch(hostNameProvider(host)) ?? l10n.remoteNoHostSelected;
+    // 帮助与关于.
+    final update = ref.watch(appUpdateProvider);
+    final newVersion = update.hasUpdate && !update.isSkipped;
+
+    final page = AppPage.list(
+      title: l10n.commonSettings,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+          child: SearchCapsuleButton(
+            key: const ValueKey('settings-search'),
+            hint: l10n.searchSettingsHint,
+            onTap: () => Navigator.of(context).push(SettingsSearchPage.route()),
+          ),
+        ),
+        const SettingsOverview(),
+        SettingsSection(
+          title: l10n.hubGroupAi,
+          children: [
+            SettingsTile(
+              icon: AppIcons.providers,
+              tint: SettingsHues.ai,
+              spot: SettingsIndex.entry(SettingsPageId.models),
+              onTap: () => _push(context, const ProvidersPage()),
+            ),
+            SettingsTile(
+              icon: AppIcons.profile,
+              tint: SettingsHues.ai,
+              spot: SettingsIndex.entry(SettingsPageId.personalization),
+              onTap: () => _push(context, const PersonalizationPage()),
+            ),
+            SettingsTile(
+              icon: AppIcons.permissions,
+              tint: SettingsHues.ai,
+              spot: SettingsIndex.entry(SettingsPageId.permission),
+              value: text(permission?.$1, color: permission?.$2 == true ? colors.warning : null),
+              onTap: () => _push(context, PermissionPage(sessionId: ref.read(currentSessionProvider))),
+            ),
+          ],
+        ),
+        SettingsSection(
+          title: l10n.hubGroupCapabilities,
+          children: [
+            SettingsTile(
+              icon: AppIcons.webSearch,
+              tint: SettingsHues.abilities,
+              spot: SettingsIndex.entry(SettingsPageId.webSearch),
+              value: text(newApi == null ? null : (newApi ? l10n.engineSearchNewApiBadge : l10n.commonDefault)),
+              onTap: () => _push(context, const WebSearchSettingsPage()),
+            ),
+            SettingsTile(
+              icon: AppIcons.generateMedia,
+              tint: SettingsHues.abilities,
+              spot: SettingsIndex.entry(SettingsPageId.media),
+              onTap: () => _push(context, const MediaSettingsPage()),
+            ),
+            SettingsTile(
+              icon: AppIcons.plugin,
+              tint: SettingsHues.abilities,
+              spot: SettingsIndex.entry(SettingsPageId.plugins),
+              value: plugins == null || plugins == 0
+                  ? null
+                  : Text(
+                      l10n.hubValuePlugins(plugins),
+                      style: AppType.tabular(Theme.of(context).textTheme.bodyMedium!),
+                    ),
+              onTap: () => _push(context, const PluginsScreen()),
+            ),
+            // The plugins' own settings sections, when the host has any.
+            ...pluginSettingsTiles(ref, tint: SettingsHues.abilities),
+          ],
+        ),
+        SettingsSection(
+          title: l10n.hubSettingsAppearance,
+          children: [
+            const AppearanceEntryTile(tint: SettingsHues.appearance),
+            SettingsSegmentTile<double>(
+              icon: AppIcons.textSize,
+              tint: SettingsHues.appearance,
+              spot: Spots.chatTextSize,
+              segments: [for (final (scale, label) in chatTextScales) PillSegment(scale, label)],
+              selected: settings.chatTextScale,
+              onChanged: (scale) => unawaited(notifier.setChatTextScale(scale)),
+            ),
+            SettingsSwitchTile(
+              icon: AppIcons.foldTurns,
+              tint: SettingsHues.appearance,
+              spot: Spots.foldTurns,
+              value: settings.foldCompletedTurns,
+              onChanged: (v) => unawaited(notifier.setFoldCompletedTurns(v)),
+            ),
+            const PetEntryTile(tint: SettingsHues.appearance),
+          ],
+        ),
+        SettingsSection(
+          title: l10n.hubGroupGeneral,
+          children: [
+            SettingsTile(
+              icon: AppIcons.swap,
+              tint: SettingsHues.general,
+              spot: SettingsIndex.entry(SettingsPageId.interface),
+              value: Text(uiMode.label),
+              onTap: () => _push(context, const InterfacePage()),
+            ),
+            const LanguageSettingsTile(tint: SettingsHues.general),
+            const NotificationSettingsTile(tint: SettingsHues.general),
+            const VoiceSettingsTile(tint: SettingsHues.general),
+            const PerformanceSettingsTile(tint: SettingsHues.general),
+            SettingsTile(
+              icon: AppIcons.keepAlive,
+              tint: SettingsHues.general,
+              spot: SettingsIndex.entry(SettingsPageId.background),
+              value: text(
+                exempt == null ? null : (exempt ? l10n.hubValueAllowed : l10n.hubValueNeedsSetup),
+                color: exempt == false ? colors.warning : null,
+              ),
+              onTap: () => _push(context, const BackgroundGuidePage()),
+            ),
+            SettingsTile(
+              icon: AppIcons.systemAccess,
+              tint: SettingsHues.general,
+              spot: SettingsIndex.entry(SettingsPageId.systemAccess),
+              onTap: () => _push(context, const SystemAccessPage()),
+            ),
+            SettingsTile(
+              icon: AppIcons.privacy,
+              tint: SettingsHues.general,
+              spot: SettingsIndex.entry(SettingsPageId.privacy),
+              onTap: () => _push(context, const PrivacyPage()),
+            ),
+          ],
+        ),
+        SettingsSection(
+          title: l10n.hubGroupHosts,
+          children: [
+            SettingsTile(
+              icon: AppIcons.remoteHosts,
+              tint: SettingsHues.hosts,
+              spot: SettingsIndex.entry(SettingsPageId.remote),
+              value: ssh == 0 ? null : Text(l10n.hubValueHosts(ssh)),
+              onTap: () => _push(context, const RemoteScreen()),
+            ),
+            SettingsTile(
+              icon: AppIcons.configure,
+              tint: SettingsHues.hosts,
+              spot: SettingsIndex.entry(SettingsPageId.engineParams),
+              value: Text(hostName),
+              onTap: () => _push(context, const EngineSettingsHubPage()),
+            ),
+          ],
+        ),
+        SettingsSection(
+          title: l10n.hubGroupHelp,
+          children: [
+            if (ref.watch(askAiAvailableProvider))
+              SettingsTile(
+                key: const ValueKey('settings-ask-ai'),
+                icon: AppIcons.askAi,
+                tint: SettingsHues.help,
+                spot: Spots.askAi,
+                value: Text(l10n.askAiTooltip),
+                onTap: () => unawaited(askAi(context, AskAiTopic.overview)),
+              ),
+            SettingsTile(
+              icon: AppIcons.community,
+              tint: SettingsHues.help,
+              spot: Spots.community,
+              onTap: () => _push(context, communityPage()),
+            ),
+            SettingsTile(
+              icon: AppIcons.diagnostics,
+              tint: SettingsHues.help,
+              spot: SettingsIndex.entry(SettingsPageId.diagnostics),
+              onTap: () => _push(context, const DiagnosticsPage()),
+            ),
+            SettingsTile(
+              icon: AppIcons.info,
+              tint: SettingsHues.help,
+              spot: SettingsIndex.entry(SettingsPageId.about),
+              value: newVersion
+                  ? UpdateBadge(l10n.hubAboutNewVersion)
+                  : Text(update.current.name, style: AppType.tabular(Theme.of(context).textTheme.bodyMedium!)),
+              onTap: () => _push(context, const AboutPage()),
+            ),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: Center(child: BrandMark(size: 18, color: colors.textDisabled)),
+        ),
+      ],
+    );
+    // Reads which plugins sit where when the engine hasn't said yet; outside
+    // the list, so it is built at once and never part of its layout.
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        page,
+        const Positioned(left: 0, top: 0, child: SeatProbe()),
+      ],
+    );
+  }
+
+  /// 权限's value: the default for new conversations, and whether it is one
+  /// that stops asking (shown in the warning colour).
+  (String, bool)? _permissionValue(WidgetRef ref) {
+    if (ref.watch(activeConnectionProvider).value == null) return null;
+    final state = ref.watch(permissionStateProvider(null)).value;
+    final value = state?.hostDefault;
+    if (state == null || value == null || state.invalidDefault) return null;
+    final name = state.options.where((o) => o.value == value).firstOrNull?.name;
+    return (permissionName(value, name), value == 'danger-full-access' || value == 'auto');
+  }
+}
+
+/// The selected remote host and its current connection state.
+class SettingsOverview extends ConsumerWidget {
+  const SettingsOverview({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = context.l10n;
+    final active = ref.watch(activeHostProvider);
+    final selected = active.kind != HostKind.none;
+    final link = selected
+        ? HostStatusView.ofLink(ref.watch(hostLinkStatusProvider(active)).value ?? HostLinkStatus.idle)
+        : HostStatusView(StatusTone.idle, l10n.commonNotConnected);
+    final title = ref.watch(hostNameProvider(active)) ?? l10n.remoteNoHostSelected;
+    return OverviewCard(
+      leading: OverviewGlyph(hostKindIcon(active.kind), tint: hostKindTint(active.kind)),
+      title: Text(title),
+      subtitle: Text(selected ? l10n.commonRemoteHost : l10n.remoteConnectionMethods),
+      semanticLabel: l10n.hubSettingsHostSemantics(title, link.label),
+      onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const RemoteScreen())),
+      footer: OverviewFooter(tone: link.tone, text: link.label),
+    );
+  }
+}

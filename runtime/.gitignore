@@ -1,0 +1,6 @@
+# Keep historical mobile build outputs ignored; host fixtures should live outside the checkout.
+.cache/
+.work/
+out/
+*.log
+__pycache__/
